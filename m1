@@ -177,3 +177,125 @@ Requirements:
 - Partition data if needed (e.g., by date)
 
 Update Python code accordingly.
+
+
+
+
+
+==============================================================
+
+🔹 STEP 1 — Understand the SAS code (MANDATORY FIRST)
+
+👉 Open your .sas file
+👉 Press Ctrl + Alt + I (Copilot Chat)
+
+Paste this:
+
+Analyze this SAS code and explain it step by step.
+
+I need:
+1. What is the purpose of this job?
+2. What are the input datasets/files?
+3. What are the output datasets/files?
+4. List all transformations (joins, filters, aggregations)
+5. Identify all PROC SQL and DATA steps
+6. Identify macros and variables
+7. Describe the final output schema (columns and types)
+
+Do NOT convert yet. Only explain clearly.
+
+✅ Why this matters:
+
+You understand business logic
+You avoid wrong conversions
+🔹 STEP 2 — Break code into sections
+
+Now ask:
+
+Break this SAS code into logical sections.
+
+For each section:
+- Give section name
+- Explain what it does
+- Mark whether it is PROC SQL, DATA step, or macro
+
+Prepare it for step-by-step Python conversion.
+
+✅ Output will look like:
+
+Section 1: Read input
+Section 2: Join datasets
+Section 3: Transform columns
+Section 4: Final output
+🔹 STEP 3 — Convert ONE section at a time
+
+⚠️ This is critical — do NOT convert whole file.
+
+👉 For PROC SQL sections:
+
+Highlight block → press Ctrl + I
+
+Convert this PROC SQL block to Python using pandas.
+
+Requirements:
+- Preserve joins exactly
+- Preserve WHERE filters
+- Keep column names same
+- Use pandas merge and groupby
+
+Explain mapping from SQL to pandas.
+👉 For DATA step:
+Convert this SAS DATA step to pandas.
+
+Preserve:
+- IF/THEN/ELSE logic
+- Column derivations
+- Missing values handling
+
+Explain any differences from SAS.
+🔹 STEP 4 — Combine all into one Python script
+
+After converting sections:
+
+Combine all converted sections into a single Python script.
+
+Requirements:
+- Use functions for each step
+- Maintain execution order
+- Add main() function
+- Add logging for batch run
+- Ensure final output writes parquet file
+
+Make it production-ready.
+🔹 STEP 5 — Add parquet + S3 logic (YOUR USE CASE)
+
+Now ask:
+
+Update this Python code to:
+
+1. Write output as parquet using pyarrow
+2. Use snappy compression
+3. Ensure schema is compatible with Redshift external tables
+4. Optionally include S3 upload using boto3
+
+Keep output structure same as SAS.
+🔹 STEP 6 — Validate correctness (VERY IMPORTANT)
+Create validation checklist to compare SAS vs Python output.
+
+Include:
+- Row count validation
+- Column validation
+- Aggregation validation
+- Null handling differences
+- Data type validation
+
+Also generate a Python test script.
+🔹 STEP 7 — Make it monthly batch-ready
+Update this Python script to support monthly execution.
+
+Include:
+- Parameter for run date
+- Logging
+- Error handling
+- Modular structure
+- Config file support

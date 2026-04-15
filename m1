@@ -1,3 +1,21 @@
+Analyze this SAS file and explain it in plain English.
+
+I need:
+1. A summary of what the code does
+2. Input datasets/tables/files
+3. Output datasets/tables/files
+4. All PROC steps used
+5. Any macros, variables, and parameters
+6. Business logic, joins, filters, aggregations, and calculations
+7. Recommended Python equivalent for each section using pandas, numpy, pathlib, sqlalchemy, pyodbc, or other needed libraries
+
+Do not convert yet. First give me a section-by-section migration plan.
+
+
+
+
+
+
 🔥 MASTER PROMPT (Use this in Copilot Chat)
 
 Paste this in Copilot Chat (Ctrl + Alt + I) 👇

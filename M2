@@ -1,0 +1,140 @@
+YOUR FINAL TARGET PIPELINE (CORRECT DESIGN)
+
+Here is your final expected flow 👇
+
+1. Shell script (UNCHANGED)
+   ↓
+2. Python (replaces SAS source logic) ✅
+   ↓
+3. Python (replaces SAS split logic) ✅
+   ↓
+4. Existing parquet conversion (UNCHANGED)
+   ↓
+5. Existing S3 upload (UNCHANGED)
+   ↓
+6. Existing Redshift load (UNCHANGED)
+⚠️ IMPORTANT CLARIFICATION ABOUT COPILOT
+
+👉 Copilot WILL NOT automatically convert full pipeline end-to-end
+
+You must guide it like this:
+
+Step	Copilot Role
+Shell scripts	❌ No change
+SAS → Python	✅ YES (main work)
+Parquet + S3	❌ keep existing
+Redshift load	❌ keep existing
+🎯 WHAT YOU SHOULD ASK COPILOT (YOUR EXACT FLOW)
+
+Now I’ll give you the exact prompts in correct order for YOUR use case
+
+🔹 STEP 1 — Analyze SAS (MANDATORY)
+Analyze this SAS code.
+
+Context:
+- This is part of a monthly MRS pipeline
+- Output is later converted to parquet and uploaded to S3
+- Redshift external tables depend on this output
+
+I need:
+1. Input datasets
+2. Output datasets
+3. Transformations (joins, filters, aggregations)
+4. Macro logic
+5. Data split logic (if any)
+
+Do NOT convert yet.
+🔹 STEP 2 — Identify ONLY 2 & 3 steps
+From this SAS code, identify:
+
+1. Logic responsible for source dataset creation
+2. Logic responsible for splitting datasets/files
+
+Ignore parquet, S3, and downstream steps.
+
+Explain clearly.
+🔹 STEP 3 — Convert ONLY SAS SOURCE LOGIC
+Convert ONLY the SAS source creation logic to Python.
+
+Requirements:
+- Use pandas
+- Preserve exact business logic
+- Keep same column names
+- Output same structure as SAS dataset
+- Do NOT include parquet or S3 logic
+
+Return clean Python function.
+🔹 STEP 4 — Convert ONLY SAS SPLIT LOGIC
+Convert ONLY the SAS split logic to Python.
+
+Requirements:
+- Split data exactly same way as SAS
+- Preserve file naming logic
+- Preserve partitioning logic if present
+- Output files compatible with next pipeline step
+
+Return clean Python function.
+🔹 STEP 5 — COMBINE INTO SINGLE PYTHON SCRIPT
+Combine both Python conversions into one script.
+
+Structure:
+- function: create_source_data()
+- function: split_data()
+- main() function to execute in order
+
+Important:
+- Output format must remain compatible with existing parquet conversion step
+- Do NOT modify downstream pipeline assumptions
+🔹 STEP 6 — VERY IMPORTANT (PIPELINE COMPATIBILITY)
+Validate that Python output matches expected SAS output.
+
+Focus on:
+- File names
+- File format
+- Schema (columns + types)
+- Data structure expected by parquet conversion step
+
+Do not change logic — only validate compatibility.
+🔥 FINAL UNDERSTANDING (CRITICAL)
+
+You are doing:
+
+❌ NOT this:
+Full pipeline rewrite
+S3 rewrite
+Redshift rewrite
+✅ YOU ARE DOING THIS:
+Replace ONLY SAS processing layer
+Keep pipeline stable
+
+👉 This is called “Lift-and-Shift Modernization (Partial)”
+
+✔️ Lowest risk
+✔️ Fastest delivery
+✔️ Enterprise-safe
+
+💡 PRO TIP (VERY IMPORTANT FOR YOU)
+
+From your screenshot, you already have:
+
+python/parquet_euc_mrs.py
+python/internal_table_load_euc_mrs.py
+
+👉 So BEST approach:
+
+Replace SAS logic into:
+
+python/source_euc_mrs.py
+python/split_euc_mrs.py
+Call them from existing shell script
+🚀 FINAL ARCHITECTURE (RECOMMENDED)
+shell/
+  generic_s3go_download.sh   ✅ keep
+  generic_sas_source.sh      ❌ replace call
+  generic_sas_split.sh       ❌ replace call
+
+python/
+  source_euc_mrs.py          ✅ new
+  split_euc_mrs.py           ✅ new
+  parquet_euc_mrs.py         ✅ existing
+  internal_table_load.py     ✅ existing

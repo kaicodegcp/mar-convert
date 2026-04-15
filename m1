@@ -1,0 +1,161 @@
+🔥 MASTER PROMPT (Use this in Copilot Chat)
+
+Paste this in Copilot Chat (Ctrl + Alt + I) 👇
+
+I am migrating an enterprise SAS data pipeline to Python.
+
+Context:
+- This SAS code runs monthly batch jobs
+- It processes datasets and outputs parquet files
+- These parquet files are stored in AWS S3
+- Redshift external tables read from S3 parquet
+- Then internal Redshift tables are loaded from external tables
+
+Goal:
+Convert SAS code to Python while preserving EXACT business logic and output format.
+
+Requirements:
+- Use Python 3.11
+- Use pandas for data processing
+- Use pyarrow or fastparquet for parquet writing
+- Ensure parquet schema matches SAS output exactly
+- Preserve all transformations, joins, filters, aggregations
+- Replace SAS macros with Python functions
+- Replace PROC SQL with pandas or SQLAlchemy
+- Maintain column names, types, and order
+- Ensure output is compatible with Redshift external tables
+
+Output format:
+1. Summary of SAS logic
+2. Step-by-step migration plan
+3. Full Python code
+4. Required pip packages
+5. Validation checklist (SAS vs Python)
+6. Any assumptions or risks
+
+Important:
+Do NOT change business logic.
+If anything is unclear, explicitly mention assumptions.
+🔧 PROMPT FOR YOUR SPECIFIC PIPELINE (VERY POWERFUL)
+
+Use this when working on your actual SAS file:
+
+Convert this SAS pipeline into Python.
+
+Pipeline flow:
+1. Read source data (SAS datasets / files)
+2. Apply transformations (joins, filters, aggregations)
+3. Generate final dataset
+4. Write output as parquet files
+5. These parquet files are stored in S3 and used by Redshift external tables
+
+Requirements:
+- Use pandas for transformations
+- Use pyarrow for parquet writing
+- Ensure schema compatibility with Redshift (no mixed types, consistent null handling)
+- Preserve partitioning logic if present
+- Maintain same column names and formats as SAS output
+
+Also:
+- Replace SAS DATA step with pandas transformations
+- Replace PROC SQL with pandas joins/groupby
+- Replace macro variables with Python config variables
+
+Return:
+- Clean modular Python code
+- Functions for each step
+- Main() function for execution
+- Logging for batch execution
+🧠 PROMPT FOR SAS FILE ANALYSIS (STEP 1 — DO THIS FIRST)
+
+Before conversion, run this:
+
+Analyze this SAS code.
+
+I need:
+1. What datasets are inputs?
+2. What transformations are applied?
+3. What is final output dataset?
+4. All joins, filters, aggregations
+5. Any macros and parameters
+6. Output schema (columns + types)
+7. Dependencies on external scripts or shell files
+
+Do not convert yet.
+Only provide structured analysis.
+⚡ PROMPT FOR PROC SQL → PYTHON
+
+Highlight a PROC SQL block → press Ctrl + I
+
+Convert this PROC SQL to pandas.
+
+Requirements:
+- Keep joins exactly same
+- Keep WHERE conditions exactly same
+- Preserve derived columns
+- Use pandas merge and groupby
+- Explain mapping from SQL to pandas
+⚡ PROMPT FOR DATA STEP → PYTHON
+Convert this SAS DATA step to pandas.
+
+Preserve:
+- IF/THEN/ELSE logic
+- Missing value handling
+- Column derivations
+- Retain logic if present
+
+Explain any differences between SAS and pandas.
+📦 PROMPT TO GENERATE FULL PYTHON PROJECT
+
+After converting sections:
+
+Create a production-ready Python project for this pipeline.
+
+Structure:
+- src/
+  - main.py
+  - transformations.py
+  - io.py
+- config/
+  - config.yaml
+- requirements.txt
+
+Include:
+- Reading input data
+- Transformation functions
+- Writing parquet output
+- S3 upload (optional)
+- Logging for batch execution
+
+Make it suitable for monthly scheduled execution.
+🧪 VALIDATION PROMPT (CRITICAL FOR YOU)
+Compare SAS output vs Python output.
+
+Create validation checklist:
+- Row count match
+- Column count match
+- Data type match
+- Aggregation totals match
+- Null handling match
+- Sorting differences
+
+Also provide a Python test script to validate results.
+🧱 EXTRA (VERY IMPORTANT FOR YOUR USE CASE)
+
+Since you use:
+
+S3
+Redshift external tables
+
+Ask Copilot:
+
+Ensure parquet output is optimized for Redshift Spectrum.
+
+Requirements:
+- Use snappy compression
+- Avoid nested structures
+- Ensure consistent schema
+- Use proper data types (no mixed types)
+- Partition data if needed (e.g., by date)
+
+Update Python code accordingly.
